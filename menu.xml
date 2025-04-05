@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OX>
+    <OXMENU id="NAVIGATION_ESHOPADMIN">
+        <MAINMENU id="mxmanageprod">
+            <SUBMENU id="mxarticles" cl="article" list="article_list">
+                <TAB id="tbcl_dre_RedirectAdderArticle" cl="dre_redirect" />
+            </SUBMENU>
+             <SUBMENU id="mxcategories" cl="category" list="category_list">
+                <TAB id="tbcl_dre_RedirectAdderArticle" cl="dre_redirect" />
+            </SUBMENU>
+        </MAINMENU>
+    </OXMENU>
+</OX>
