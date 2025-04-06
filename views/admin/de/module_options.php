@@ -3,5 +3,5 @@ $sLangName  = "Deutsch";
 
 $aLang = array(
 'charset'                                      => 'UTF-8',
-'tbcl_dre_RedirectAdderArticle'                => '[BM] Weiterleitung'
+'tbcl_dre_RedirectAdderArticle'                => 'Weiterleitung'
 );

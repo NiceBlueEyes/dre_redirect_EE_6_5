@@ -12,6 +12,15 @@ class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     protected $_oArticle = null;
 
+
+    public function render() {
+        parent::render();
+
+        $this->addTplParam('oldLink', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oldLink'));
+        $this->addTplParam('overwrite', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('overwrite'));
+
+        return $this->_sThisTemplate;
+    }
     /**
      * returns active article for editing
      * @param bool $blReset
@@ -33,7 +42,7 @@ class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * removes shop url from submitted url
      */
     private function cleanUrl ($url) {
-	return str_replace( \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL') ,"", $url);
+	    return str_replace( \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL') ,"", $url);
     }
     
     /**
@@ -94,24 +103,20 @@ class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $this->addTplParam("result", nl2br($result));
         $this->setEditObjectId($sObjectid);
     }
-
-    public function render() {
-        return parent::render();
-    }
     
     public function get_results($url) {
-	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-	curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64; rv:21.0) Gecko/20100101 Firefox/21.0"); // Necessary. The server checks for a valid User-Agent.
-	curl_exec($ch);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+            curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64; rv:21.0) Gecko/20100101 Firefox/21.0"); // Necessary. The server checks for a valid User-Agent.
+        curl_exec($ch);
 
-	$response = curl_exec($ch);
-	//preg_match_all('/^Location:(.*)$/mi', $response, $matches);
-	curl_close($ch);
+        $response = curl_exec($ch);
+        //preg_match_all('/^Location:(.*)$/mi', $response, $matches);
+        curl_close($ch);
 
-	return $response;
+        return $response;
     }
 }

@@ -43,19 +43,19 @@ Hinweis: der Ziel Link muss bereits in der OXSEO Tabelle vorhanden sein (dh. Art
     <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
 </form>
 
-<form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" enctype="multipart/form-data" method="post">
-[{$oViewConf->getHiddenSid()}]
-<input type="hidden" name="cl" value="dre_redirect">
-<input type="hidden" name="fnc" value="">
-<input type="hidden" name="oxid" value="[{ $oxid }]">
-<input type="hidden" name="voxid" value="[{ $oxid }]">
-<input type="hidden" name="editval[article__oxid]" value="[{ $oxid }]">
-<input type="text" name="editval[oldLink]" size="130" value ="beispiel/url.html">
-Alten Eintrag ueberschreiben?
-<input type="checkbox" name="editval[overwrite]" value="1">
-</br>
-</br>
-<input type="submit" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'"" ><br>
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" enctype="multipart/form-data" method="post">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="cl" value="dre_redirect">
+    <input type="hidden" name="fnc" value="">
+    <input type="hidden" name="oxid" value="[{ $oxid }]">
+    <input type="hidden" name="voxid" value="[{ $oxid }]">
+    <input type="hidden" name="editval[article__oxid]" value="[{ $oxid }]">
+    <input type="text"   name="editval[oldLink]" size="130" value ="beispiel/url.html">
+    Alten Eintrag ueberschreiben?
+    <input type="checkbox" name="editval[overwrite]" value="1">
+    </br>
+    </br>
+    <input type="submit" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'"" ><br>
 </form>
          </br>       
 <p style="color:green;">[{$info}]</p>
@@ -65,10 +65,10 @@ Alten Eintrag ueberschreiben?
     [{$errorCount}]</p>
 
 [{if $oldLink}]
-Hint: Browsers cache 301 redirects, so be sure to empty cache for the page your are checking your new redirects. </br>
-checking old url with curl (ommit cache) ( 
-<a href="[{$oViewConf->getBaseDir()}][{$oldLink}]"  target='_blank'>[{ $oViewConf->getBaseDir() }][{$oldLink}]</a>)
- redirect destination:
+    Hint: Browsers cache 301 redirects, so be sure to empty cache for the page your are checking your new redirects. </br>
+    checking old url with curl (ommit cache) (
+    <a href="[{$oViewConf->getBaseDir()}][{$oldLink}]"  target='_blank'>[{ $oViewConf->getBaseDir() }][{$oldLink}]</a>)
+     redirect destination:
 [{/if}]
 
 </br>
