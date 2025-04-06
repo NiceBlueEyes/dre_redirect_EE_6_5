@@ -1,5 +1,5 @@
 {
-    "name":        "Bender/dre_redirect",
+    "name":        "bender/dre_redirect",
     "description": "Redirect Adder Module for the OXID 6 eShop. Fürgt Kategorien und Artikeln einen zusätzlichen Reiter hinzu, mit dem man einfach 301 Weiterleitungen zu Artikeln und Kategorien hinzufügen kann. ",
     "type":        "oxideshop-module",
     "version": "0.6.5",
@@ -22,7 +22,7 @@
             "blacklist-filter": [
                 "documentation/**/*.*"
             ],
-	   "target-directory": "/"
+	        "target-directory": "/bender/dre_redirect"
         }
     },
     "require":     {
@@ -30,7 +30,7 @@
     },
     "autoload":    {
         "psr-4": {
-           "Bender\\dre_redirect\\":       "../../../source/modules/bender/dre_redirect"
+           "Bender\\dre_redirect\\": "../../../source/modules/bender/dre_redirect"
         }
     }
 }
