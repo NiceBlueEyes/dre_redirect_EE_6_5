@@ -1,8 +1,10 @@
 <?php
 
-namespace Bender\dre_redirect\Admin\Controller;
+namespace Bender\dre_redirect\Application\Controller\Admin;
 
-class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController {
+use OxidEsales\Eshop\Application\Controller\Admin\AdminController;
+
+class dre_redirect extends AdminController {
 
     protected $_sThisTemplate = 'dre_redirect.tpl';
     
@@ -26,7 +28,8 @@ class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param bool $blReset
      * @return oxArticle
      */
-    public function getArticle($blReset = false) {
+    public function getArticle($blReset = false)
+    {
         if ($this->_oArticle !== null && !$blReset) {
             return $this->_oArticle;
         }
@@ -41,8 +44,9 @@ class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /*
      * removes shop url from submitted url
      */
-    private function cleanUrl ($url) {
-	    return str_replace( \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL') ,"", $url);
+    private function cleanUrl($url)
+    {
+        return str_replace(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL'), "", $url);
     }
     
     /**
@@ -50,7 +54,8 @@ class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return null
      */
-    public function save() {
+    public function save()
+    {
         
         $skipInsert = false;
         
@@ -73,13 +78,13 @@ class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
          * else it would be possible to add the same 301 to another object in a different lang,
          * and only the first would ever do an 301, which is undefined behavior.
          */
-        if ( $overwrite ) {
+        if ($overwrite) {
             $sDel = "DELETE FROM oxseohistory WHERE OXIDENT=?";
-            $oDb->execute( $sDel, [ $oxident ] );   
+            $oDb->execute($sDel, [ $oxident ]);
         } else {
-            //check if a ident exits 
+            //check if a ident exits
             $sCheckQuery = "SELECT COUNT(OXIDENT) from oxseohistory WHERE OXIDENT=?";
-            $countResult = $oDb->execute( $sCheckQuery, [ $oxident ] );  
+            $countResult = $oDb->execute($sCheckQuery, [ $oxident ]);
             
             if ($countResult > 0) {
                 $this->addTplParam("errorCount", "ERROR: there are already " .$countResult . " entrys in seohistory table for this url, use overwrite to force addition of this redirect");
@@ -88,23 +93,24 @@ class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             }
         }
         
-        if ( !$skipInsert ) {
+        if (!$skipInsert) {
             $sQ = "INSERT  INTO oxseohistory (OXOBJECTID, OXIDENT, OXSHOPID, OXLANG, OXHITS, OXINSERT, OXTIMESTAMP) VALUES ( ?, ?, 1, ? ,0, NOW() ,NOW())";
             try {
-                $oDb->execute( $sQ, [ $sObjectid, $oxident, $iLang ] );
-                $this->addTplParam("info", "info: success" ) ;
+                $oDb->execute($sQ, [ $sObjectid, $oxident, $iLang ]);
+                $this->addTplParam("info", "info: success") ;
             } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $e) {
-                $this->addTplParam("error", "SQL failed: Redirect exists </br></br>Debug: " . $sQ .  " oxident: " . $oxident . " sObjectid " . $sObjectid . " ilang: ". $iLang ."</br></br>" . nl2br ( $e->getString()) ) ;
+                $this->addTplParam("error", "SQL failed: Redirect exists </br></br>Debug: " . $sQ .  " oxident: " . $oxident . " sObjectid " . $sObjectid . " ilang: ". $iLang ."</br></br>" . nl2br($e->getString())) ;
             }
         }
         
         $this->addTplParam('oldLink', $aParams['oldLink']);
-        $result = $this->get_results( $sShopURL . $aParams['oldLink'] );
+        $result = $this->get_results($sShopURL . $aParams['oldLink']);
         $this->addTplParam("result", nl2br($result));
         $this->setEditObjectId($sObjectid);
     }
     
-    public function get_results($url) {
+    public function get_results($url)
+    {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

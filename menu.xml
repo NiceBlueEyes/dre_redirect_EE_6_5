@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OX>
-    <OXMENU id="NAVIGATION_ESHOPADMIN">
-        <MAINMENU id="mxmanageprod">
+    <OXMENU id="NAVIGATION_DRE_REDIRECT_MODULE">
+        <MAINMENU id="dre_redirect">
             <SUBMENU id="mxarticles" cl="article" list="article_list">
                 <TAB id="tbcl_dre_RedirectAdderArticle" cl="dre_redirect" />
             </SUBMENU>

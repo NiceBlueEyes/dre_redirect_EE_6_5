@@ -14,10 +14,11 @@ $aModule = array(
     'email' => 'support@bodynova.de',
     'url' => 'https://bodynova.de',
     'extend' => array(),
-    'controllers' => array(   
-        'dre_redirect' => Bender\dre_Redirect\Admin\Controller\dre_redirect::class
-    ), 
+    'controllers' => array(
+        'dre_redirect' =>
+            \Bender\dre_redirect\Application\Controller\Admin\dre_redirect::class
+    ),
     'templates' => array(
-        'dre_redirect.tpl' => 'bender/dre_redirect/views/admin/tpl/dre_redirect.tpl'
+        'dre_redirect.tpl' => 'bender/dre_redirect/Application/views/admin/tpl/dre_redirect.tpl'
     )
 );
