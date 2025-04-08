@@ -2,9 +2,11 @@
 
 namespace Bender\dre_redirect\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Application\Controller\Admin\AdminController;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 
-class dre_redirect extends AdminController {
+class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
+{
 
     protected $_sThisTemplate = 'dre_redirect.tpl';
     
@@ -14,8 +16,18 @@ class dre_redirect extends AdminController {
      */
     protected $_oArticle = null;
 
+    /**
+     * @throws DatabaseErrorException
+     * @throws DatabaseConnectionException
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-    public function render() {
+
+    public function render()
+    {
         parent::render();
 
         $this->addTplParam('oldLink', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oldLink'));
@@ -23,6 +35,7 @@ class dre_redirect extends AdminController {
 
         return $this->_sThisTemplate;
     }
+
     /**
      * returns active article for editing
      * @param bool $blReset
@@ -115,7 +128,7 @@ class dre_redirect extends AdminController {
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, true);
-            curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64; rv:21.0) Gecko/20100101 Firefox/21.0"); // Necessary. The server checks for a valid User-Agent.
         curl_exec($ch);
 
