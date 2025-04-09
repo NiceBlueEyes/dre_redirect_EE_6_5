@@ -5,8 +5,10 @@ namespace Bender\dre_redirect\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 
-class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
+class dre_redirect_controller extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
+
+    protected $_sClass = 'dre_redirect';
 
     protected $_sThisTemplate = 'dre_redirect.tpl';
     
@@ -33,7 +35,7 @@ class dre_redirect extends \OxidEsales\Eshop\Application\Controller\Admin\AdminC
         $this->addTplParam('oldLink', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oldLink'));
         $this->addTplParam('overwrite', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('overwrite'));
 
-        return $this->_sThisTemplate;
+        return 'dre_redirect.tpl';
     }
 
     /**

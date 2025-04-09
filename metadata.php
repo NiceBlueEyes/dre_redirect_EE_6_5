@@ -15,8 +15,8 @@ $aModule = array(
     'url' => 'https://bodynova.de',
     'extend' => array(),
     'controllers' => array(
-        'dre_redirect' =>
-            \Bender\dre_redirect\Application\Controller\Admin\dre_redirect::class
+        'dre_redirect_controller' =>
+            Bender\dre_redirect\Application\Controller\Admin\dre_redirect_controller::class
     ),
     'templates' => array(
         'dre_redirect.tpl' => 'bender/dre_redirect/Application/views/admin/tpl/dre_redirect.tpl'
