@@ -3,10 +3,10 @@
     <OXMENU id="NAVIGATION_DRE_REDIRECT_MODULE">
         <MAINMENU id="dre_redirect">
             <SUBMENU id="mxarticles" cl="article" list="article_list">
-                <TAB id="tbcl_dre_RedirectAdderArticle" cl="dre_redirect" />
+                <TAB id="tbcl_dre_RedirectAdderArticle" cl="dre_redirect_controller" />
             </SUBMENU>
              <SUBMENU id="mxcategories" cl="category" list="category_list">
-                <TAB id="tbcl_dre_RedirectAdderArticle" cl="dre_redirect" />
+                <TAB id="tbcl_dre_RedirectAdderArticle" cl="dre_redirect_controller" />
             </SUBMENU>
         </MAINMENU>
     </OXMENU>
