@@ -5,10 +5,10 @@ namespace Bender\dre_redirect\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 
-class dre_redirect_controller extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
+class dre_redirect_controller extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
-    protected $_sClass = 'dre_redirect';
+    protected $_sClass = 'dre_redirect_controller';
 
     protected $_sThisTemplate = 'dre_redirect.tpl';
     
