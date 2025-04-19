@@ -1,27 +1,27 @@
 {
-    "name": "bender/dre_redirect",
-    "description": "Redirect Adder Module for the OXID 6 eShop. Fürgt Kategorien und Artikeln einen zusätzlichen Reiter hinzu, mit dem man einfach 301 Weiterleitungen zu Artikeln und Kategorien hinzufügen kann. ",
-    "type":        "oxideshop-module",
-    "license": [
-        "GPL-3.0-or-later"
-    ],
-    "authors": [{
-            "name": "André Bender",
-            "homepage": "https://bodynova.de/",
-            "email": "a.bender@bodynova.de",
-            "role": "Developer"
-    }],
-    "require": {
-    },
-    "autoload": {
-        "psr-4": {
-            "Bender\\dre_redirect\\": "../../../source/modules/bender/dre_redirect"
-        }
-    },
-    "extra": {
-        "oxideshop": {
-            "target-directory": "/bender/dre_redirect"
-        }
+  "name": "bender/dre_redirect",
+  "description": "Redirect Adder Module for the OXID 6 eShop.",
+  "type": "oxideshop-module",
+  "minimum-stability": "dev",
+  "keywords": [
+    "oxid",
+    "modules",
+    "eShop",
+    "dashboard"
+  ],
+  "homepage": "https://sales.bodynova.com",
+  "license": [
+    "proprietary"
+  ],
+  "extra": {
+    "oxideshop": {
+      "target-directory": "bender/dre_redirect"
     }
+  },
+  "autoload": {
+    "psr-4": {
+      "Bender\\dre_redirect\\": "../../../source/modules/bender/dre_redirect"
+    }
+  }
 }
 
