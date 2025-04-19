@@ -7,11 +7,10 @@ use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 
 class dre_redirect_controller extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     protected $_sClass = 'dre_redirect_controller';
 
     protected $_sThisTemplate = 'dre_redirect.tpl';
-    
+
     /**
      * stores active article for editing
      * @var oxArticle
@@ -32,9 +31,8 @@ class dre_redirect_controller extends \OxidEsales\Eshop\Application\Controller\A
     {
         parent::render();
 
-        $this->addTplParam('oldLink', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oldLink'));
-        $this->addTplParam('overwrite', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('overwrite'));
-
+        #$this->addTplParam('oldLink', \OxidEsales\Eshop\Core\Registry::getRequest()->getRequestParameter('oldLink'));
+        #$this->addTplParam('overwrite', \OxidEsales\Eshop\Core\Registry::getRequest()->getRequestParameter('overwrite'));
         return 'dre_redirect.tpl';
     }
 
@@ -63,7 +61,7 @@ class dre_redirect_controller extends \OxidEsales\Eshop\Application\Controller\A
     {
         return str_replace(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL'), "", $url);
     }
-    
+
     /**
      * Saves changes of article parameters.
      *
@@ -71,59 +69,63 @@ class dre_redirect_controller extends \OxidEsales\Eshop\Application\Controller\A
      */
     public function save()
     {
-        
+
         $skipInsert = false;
-        
+
         $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
-        
+
         $sShopURL = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL');
-        
+
+        $sShopid = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
+
         // clean url from sShopUrl and generate "ident"
         $urlPart = $this->cleanUrl($aParams['oldLink']);
         $oxident = md5($urlPart);
-        
+
         $overwrite = (int) $aParams['overwrite'];
         $iLang = (int) \OxidEsales\Eshop\Core\Registry::getLang()->getEditLanguage();
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sObjectid = $soxId = $this->getEditObjectId();
-        
+        $sObjectid = $this->getEditObjectId();
+
         /*
          * check for overwrite, if overwrite is not set check if an 301 already exits.
          * else it would be possible to add the same 301 to another object in a different lang,
          * and only the first would ever do an 301, which is undefined behavior.
          */
         if ($overwrite) {
-            $sDel = "DELETE FROM oxseohistory WHERE OXIDENT=?";
-            $oDb->execute($sDel, [ $oxident ]);
+            $sDel = "DELETE FROM oxseohistory WHERE OXIDENT=? AND OXSHOPID=? AND OXLANG=?";
+            $oDb->execute($sDel, [ $oxident , $sShopid, $iLang ]);
+            $deleteSeo = "DELETE FROM oxseo WHERE OXIDENT=? AND OXSHOPID=? AND OXLANG=?";
+            $oDb->execute($deleteSeo, [ $oxident , $sShopid, $iLang ]);
         } else {
             //check if a ident exits
-            $sCheckQuery = "SELECT COUNT(OXIDENT) from oxseohistory WHERE OXIDENT=?";
-            $countResult = $oDb->execute($sCheckQuery, [ $oxident ]);
-            
+            $sCheckQuery = "SELECT COUNT(OXIDENT) from oxseohistory WHERE OXIDENT=? AND OXSHOPID=? AND OXLANG=?";
+            $countResult = $oDb->execute($sCheckQuery, [ $oxident , $sShopid, $iLang]);
+
             if ($countResult > 0) {
-                $this->addTplParam("errorCount", "ERROR: there are already " .$countResult . " entrys in seohistory table for this url, use overwrite to force addition of this redirect");
+                $this->addTplParam("errorCount", "ERROR: there are already " . $countResult . " entrys in seohistory table for this url, use overwrite to force addition of this redirect");
                 $this->setEditObjectId($sObjectid);
                 $skipInsert = true;
             }
         }
-        
+
         if (!$skipInsert) {
-            $sQ = "INSERT  INTO oxseohistory (OXOBJECTID, OXIDENT, OXSHOPID, OXLANG, OXHITS, OXINSERT, OXTIMESTAMP) VALUES ( ?, ?, 1, ? ,0, NOW() ,NOW())";
+            $sQ = "INSERT  INTO oxseohistory (OXOBJECTID, OXIDENT, OXSHOPID, OXLANG, OXHITS, OXINSERT, OXTIMESTAMP) VALUES ( ?, ?, ?, ? ,0, NOW() ,NOW())";
             try {
-                $oDb->execute($sQ, [ $sObjectid, $oxident, $iLang ]);
+                $oDb->execute($sQ, [ $sObjectid, $oxident,$sShopid, $iLang ]);
                 $this->addTplParam("info", "info: success") ;
             } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $e) {
-                $this->addTplParam("error", "SQL failed: Redirect exists </br></br>Debug: " . $sQ .  " oxident: " . $oxident . " sObjectid " . $sObjectid . " ilang: ". $iLang ."</br></br>" . nl2br($e->getString())) ;
+                $this->addTplParam("error", "SQL failed: Redirect exists </br></br>Debug: " . $sQ .  " oxident: " . $oxident . " sObjectid " . $sObjectid . " ilang: " . $iLang . "</br></br>" . nl2br($e->getString())) ;
             }
         }
-        
-        $this->addTplParam('oldLink', $aParams['oldLink']);
+
+        $this->addTplParam("oldLink", $aParams['oldLink']);
         $result = $this->get_results($sShopURL . $aParams['oldLink']);
         $this->addTplParam("result", nl2br($result));
         $this->setEditObjectId($sObjectid);
     }
-    
+
     public function get_results($url)
     {
         $ch = curl_init($url);
